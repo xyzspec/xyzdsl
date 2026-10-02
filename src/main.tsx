@@ -3,10 +3,11 @@ import { createRoot } from 'react-dom/client';
 import { AssetResolver, createSpatialDocument, openLocalScene } from './index';
 import { VisualEditor } from './ui/VisualEditor';
 import { resolveRemoteAsset } from './remoteAssets';
+import defaultDraft from './defaultDraft.xyzdsl?raw';
 import './workspace.css';
 import './styles.css';
 function App() {
- const [source,setSource] = useState('"Box/+0+1/+0+1/+0+1":"color: coral;"');
+ const [source,setSource] = useState(defaultDraft);
  const [error,setError] = useState('');
  const [local,setLocal] = useState<Awaited<ReturnType<typeof openLocalScene>>>();
  const generation = useRef(0);
