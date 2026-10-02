@@ -41,3 +41,21 @@ and remote semantics tests stay in explorer.
 npm test
 npm run build
 ```
+
+## Visual editor and mobile workspace
+
+The app opens in editor mode with Objects, Source, Assets, and Problems panels.
+Select an object in the outline or with Cmd/Ctrl-click in the scene. Edit its
+position, dimensions, rotation, geometry, and material in the inspector; scene
+keyboard controls also update the source declaration. Use **Save scene.xyz** in
+Source to download edits. Local folder originals are never overwritten.
+
+On narrow screens the workspace sits below the scene with a draggable horizontal
+separator; touch-friendly property controls remain available. Viewer mode hides
+the workspace and retains the mobile viewpoint tour controls. The mode button
+reopens the editor on mobile.
+
+`VisualEditor` is a controlled source editor (`source`, `onChange`) with host
+slots for asset controls and errors. The explorer shares the inspector, outline,
+source editor, layout, workspace shell, mobile detection, and workspace CSS via
+package exports. Its transaction panels remain application-owned.

@@ -42,7 +42,7 @@
     "./selection": "./src/selection.ts",
     "./index": "./src/index.ts",
     "./assets": "./src/assets.tsx",
-    "./ui/SelectedNodeInspector": "./src/ui/SelectedNodeInspector.ts",
+    "./ui/SelectedNodeInspector": "./src/ui/SelectedNodeInspector.tsx",
     "./ui/useMobileViewport": "./src/ui/useMobileViewport.ts",
     "./xyzdsl/contentParser": "./src/xyzdsl/contentParser.ts",
     "./xyzdsl/editXyzDslSource": "./src/xyzdsl/editXyzDslSource.ts",
@@ -102,7 +102,15 @@
     "./performance/ModelRuntime": "./src/performance/ModelRuntime.tsx",
     "./performance/SelectedModelAssetStore": "./src/performance/SelectedModelAssetStore.ts",
     "./performance/modelResources": "./src/performance/modelResources.ts",
-    "./performance/renderQuality": "./src/performance/renderQuality.ts"
+    "./performance/renderQuality": "./src/performance/renderQuality.ts",
+    "./ui/XyzDslTreeView": "./src/ui/XyzDslTreeView.tsx",
+    "./ui/EditorLayout": "./src/ui/EditorLayout.tsx",
+    "./ui/WorkspacePanel": "./src/ui/WorkspacePanel.tsx",
+    "./ui/usePersistentState": "./src/ui/usePersistentState.ts",
+    "./ui/PressAndHoldButton": "./src/ui/PressAndHoldButton.tsx",
+    "./ui/XyzDslEditor": "./src/ui/XyzDslEditor.tsx",
+    "./workspace.css": "./src/workspace.css",
+    "./ui/VisualEditor": "./src/ui/VisualEditor.tsx"
   },
   "peerDependencies": {
     "react": "^19.2.1",

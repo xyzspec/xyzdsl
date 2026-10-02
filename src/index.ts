@@ -3,3 +3,6 @@ export { createSpatialDocument } from './model/createSpatialDocument';
 export { AssetResolver } from './assets';
 export type { SpatialDocument } from './model/SpatialDocument';
 export { openLocalScene } from './localScene';
+export { VisualEditor } from './ui/VisualEditor';
+export { WorkspacePanel } from './ui/WorkspacePanel';
+export { EditorLayout } from './ui/EditorLayout';
