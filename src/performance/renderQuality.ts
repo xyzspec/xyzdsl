@@ -7,8 +7,8 @@ export const QUALITY = {
 export function isRenderQuality(value: unknown): value is RenderQuality {
   return value === 'low' || value === 'balanced' || value === 'high';
 }
-export function defaultQuality(memory?: number, cores?: number, coarse = false): RenderQuality {
-  return coarse || (memory !== undefined && memory <= 4) || (cores !== undefined && cores <= 4) ? 'low' : 'balanced';
+export function defaultQuality(memory?: number, cores?: number, _coarse = false): RenderQuality {
+  return (memory !== undefined && memory <= 2) || (cores !== undefined && cores <= 2) ? 'low' : 'balanced';
 }
 export function initialQuality(): RenderQuality {
   if (typeof navigator === 'undefined') return 'balanced';

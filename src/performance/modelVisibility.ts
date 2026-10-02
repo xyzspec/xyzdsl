@@ -1,4 +1,4 @@
-import { Box3, Frustum, Matrix4, Sphere, Vector3, type Camera, type PerspectiveCamera } from 'three';
+import { Box3, Frustum, Matrix4, Ray, Sphere, Vector3, type Camera, type PerspectiveCamera } from 'three';
 import type { SpatialNode } from '../model/SpatialNode';
 const matrix = new Matrix4();
 const frustum = new Frustum();
@@ -20,6 +20,22 @@ export function modelScreenPixels(camera: Camera, worldMatrix: Matrix4, height: 
   return Math.min(height * 4, height * sphere.radius / (distance * Math.tan(perspective.fov * Math.PI / 360)));
 }
 
+const inverseWorld = new Matrix4();
+const gaze = new Ray();
+const gazeDirection = new Vector3();
+const hit = new Vector3();
+
+/** Test the forward ray against the fitted boundary in model-local space. */
+export function cameraFacesModel(camera: Camera, worldMatrix: Matrix4): boolean {
+  camera.updateMatrixWorld();
+  if (worldMatrix.determinant() === 0) return false;
+  camera.getWorldPosition(gaze.origin);
+  camera.getWorldDirection(gazeDirection);
+  gaze.direction.copy(gazeDirection);
+  gaze.applyMatrix4(inverseWorld.copy(worldMatrix).invert());
+  return gaze.intersectBox(box, hit) !== null;
+}
+
 export type ModelTier = 'none' | 'preview' | 'standard' | 'detail';
 export function chooseModelTier(pixels: number, previous: ModelTier): ModelTier {
   if (pixels < (previous === 'none' ? 12 : 6)) return 'none';
@@ -35,8 +51,10 @@ export function modelTierSource(model: NonNullable<SpatialNode['model']>, tier: 
 }
 
 /** Selection pins residency but still respects the device fidelity ceiling. */
-export function requestedModelTier(pixels: number, previous: ModelTier, selected: boolean, ceiling: ModelTier = 'detail'): ModelTier {
+export function requestedModelTier(pixels: number, previous: ModelTier, selected: boolean, ceiling: ModelTier = 'detail', focused = false): ModelTier {
   const levels: ModelTier[] = ['none', 'preview', 'standard', 'detail'];
-  const desired = selected ? 'detail' : chooseModelTier(pixels, previous);
+  const visible = chooseModelTier(pixels, previous);
+  // Standard is the textured baseline; previews remain loading/budget fallbacks.
+  const desired = selected || (focused && visible !== 'none') ? 'detail' : visible === 'preview' ? 'standard' : visible;
   return levels[Math.min(levels.indexOf(desired), levels.indexOf(ceiling))];
 }

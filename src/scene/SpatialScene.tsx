@@ -8,16 +8,16 @@ import { ContentPrimitive } from './ContentPrimitive';
 import { SpatialPrimitive } from './SpatialPrimitive';
 
 /** Shared dispatch for every XYZDSL render node. Hosts supply platform adapters. */
-export function SpatialScene({ document, selectedNodeId, onSelectNode, selectionEnabled = true, maxTier = 'detail', resolvedModels = false, renderContent, onPrecisionScaleChange }: {
+export function SpatialScene({ document, selectedNodeId, onSelectNode, selectionEnabled = true, maxTier = 'detail', tourMode = false, resolvedModels = false, renderContent, onPrecisionScaleChange }: {
  document: SpatialDocument; selectedNodeId?: string; onSelectNode?: (id: string) => void;
- selectionEnabled?: boolean; maxTier?: ModelTier; resolvedModels?: boolean;
+ tourMode?: boolean; selectionEnabled?: boolean; maxTier?: ModelTier; resolvedModels?: boolean;
  renderContent?: (node: SpatialNode) => ReactNode;
  onPrecisionScaleChange?: (id: string, scale: number | undefined) => void;
 }) {
  return <>
  {document.csgExpressions.map(expression => <CsgPrimitive key={expression.id} expression={expression} onSelect={onSelectNode} selectionEnabled={selectionEnabled}/>)}
  {document.renderNodes.map(node => node.model?.source ?
-  <ModelPrimitive key={node.id} node={node} selected={node.id === selectedNodeId} maxTier={maxTier} onSelect={onSelectNode} selectionEnabled={selectionEnabled} resolved={resolvedModels} onPrecisionScaleChange={onPrecisionScaleChange}/> : node.content?.kind ?
+  <ModelPrimitive key={node.id} node={node} selected={node.id === selectedNodeId} maxTier={maxTier} tourMode={tourMode} onSelect={onSelectNode} selectionEnabled={selectionEnabled} resolved={resolvedModels} onPrecisionScaleChange={onPrecisionScaleChange}/> : node.content?.kind ?
   renderContent ? <Fragment key={node.id}>{renderContent(node)}</Fragment> : <ContentPrimitive key={node.id} node={node} onSelect={onSelectNode} selectionEnabled={selectionEnabled}/> :
   <SpatialPrimitive key={node.id} node={node} onSelect={onSelectNode} selectionEnabled={selectionEnabled}/>)}</>;
 }

@@ -2,7 +2,7 @@ import { Component, Suspense, useCallback, useEffect, useMemo, useRef, useState,
 import { Html } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { useModelAsset, useSelectedModelAsset } from '../performance/ModelRuntime';
-import { requestedModelTier, modelScreenPixels, modelTierSource, type ModelTier } from '../performance/modelVisibility';
+import { cameraFacesModel, requestedModelTier, modelScreenPixels, modelTierSource, type ModelTier } from '../performance/modelVisibility';
 import type { ThreeEvent } from '@react-three/fiber';
 import { SkeletonUtils } from 'three-stdlib';
 import { Box3, Vector3, Color, type Material, type Mesh, type Object3D, type Group } from 'three';
@@ -90,7 +90,7 @@ export function StreamingModel({ node, tier, resolved, selected, onPrecisionScal
   return <ModelObject scene={asset.value.scene} fit={model.fit} align={model.align} node={node} targetScale={node.transform.scale} onPrecisionScaleChange={onPrecisionScaleChange} />;
 }
 
-export function ModelPrimitive({ node, onSelect, selectionEnabled = true, onPrecisionScaleChange, resolved = false, selected = false, maxTier = 'detail' }: { selected?: boolean; maxTier?: ModelTier; node: SpatialNode; onSelect?: (id: string) => void; selectionEnabled?: boolean; onPrecisionScaleChange?: (id: string, scale: number | undefined) => void; resolved?: boolean }) {
+export function ModelPrimitive({ node, onSelect, selectionEnabled = true, onPrecisionScaleChange, resolved = false, selected = false, maxTier = 'detail', tourMode = false }: { tourMode?: boolean; selected?: boolean; maxTier?: ModelTier; node: SpatialNode; onSelect?: (id: string) => void; selectionEnabled?: boolean; onPrecisionScaleChange?: (id: string, scale: number | undefined) => void; resolved?: boolean }) {
   const resolveModelUrl = useAssetResolver();
   const model = node.model!;
   const { position, rotation, scale } = node.transform;
@@ -101,7 +101,7 @@ export function ModelPrimitive({ node, onSelect, selectionEnabled = true, onPrec
   useFrame(({ camera, size }) => {
     if (!group.current) return;
     group.current.updateWorldMatrix(true, false);
-    const next = requestedModelTier(modelScreenPixels(camera, group.current.matrixWorld, size.height), tier, selected, maxTier);
+    const next = requestedModelTier(modelScreenPixels(camera, group.current.matrixWorld, size.height), tier, selected, maxTier, tourMode && cameraFacesModel(camera, group.current.matrixWorld));
     if (next === 'none' && tier !== 'none') {
       // A timer also expires when demand rendering is idle outside the view.
       if (unloadTimer.current === undefined) unloadTimer.current = setTimeout(() => {

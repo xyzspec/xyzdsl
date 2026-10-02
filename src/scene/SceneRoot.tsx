@@ -106,7 +106,7 @@ export function SceneRoot({ document: spatialDocument, selectedNodeId, onSelectN
       <PerspectiveCamera ref={cameraRef} makeDefault position={DEFAULT_CAMERA_POSITION} fov={45} near={clips.near} far={clips.far} />
       <Lighting />
       {editorMode && <XyzCornerGrid {...roomDimensions} />}
-      <SpatialScene document={spatialDocument} selectedNodeId={selectedNodeId} onSelectNode={onSelectNode} selectionEnabled={cameraMode === 'orbit'} maxTier={QUALITY[quality].maxTier} onPrecisionScaleChange={handleModelPrecisionScaleChange}/>
+      <SpatialScene document={spatialDocument} selectedNodeId={selectedNodeId} onSelectNode={onSelectNode} selectionEnabled={cameraMode === 'orbit'} tourMode={Boolean(point)} maxTier={point && quality !== 'low' ? 'detail' : QUALITY[quality].maxTier} onPrecisionScaleChange={handleModelPrecisionScaleChange}/>
       {editorMode && !point && points.map(node => (
         <ViewPointMarker key={node.id} node={node} selected={node.id === selectedNodeId} onSelect={onSelectNode} />
       ))}
