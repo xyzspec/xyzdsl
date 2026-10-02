@@ -6,3 +6,8 @@ export { openLocalScene } from './localScene';
 export { VisualEditor } from './ui/VisualEditor';
 export { WorkspacePanel } from './ui/WorkspacePanel';
 export { EditorLayout } from './ui/EditorLayout';
+export { SpatialScene } from './scene/SpatialScene';
+export { parseXyzDslDocument, parseXyzDslDeclaration } from './xyzdsl/parser';
+export { resolveXyzDslDocument } from './xyzdsl/resolveDocument';
+export type { SpatialNode } from './model/SpatialNode';
+export type { ParseDiagnostic, ParseResult } from './xyzdsl/types';

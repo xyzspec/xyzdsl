@@ -72,3 +72,33 @@ GitHub Pages so scripts, fonts, and GLB decoders work under `/xyzdsl/` and with
 custom domains. Local development keeps its relative base path.
 
 The default deployment URL is https://xyzspec.github.io/xyzdsl/.
+
+
+## Primary specification implementation
+
+This repository owns the executable XYZDSL parser, resolution rules, spatial
+model, renderer dispatch (`SpatialScene`), model lifecycle, and visual editor.
+Implement syntax and rendering changes here and add regression cases here.
+Written specification changes must be implemented and tested in this core before
+applications acquire the behavior; prose alone does not change the renderer.
+
+Explorer and native-viewer depend directly on `@xyz/viewer`, linked with
+`file:../xyz-viewer`. No generated compiler or rendering copies are needed.
+Keep checkouts as siblings, using this repository as `xyz-viewer/`. A local edit
+is visible to each application's next build (and web development reload).
+Run `npm run core:update` in either consumer to fast-forward the core checkout,
+install its locked dependencies, and refresh the consumer install. Commit any
+consumer lockfile changes with its release. Changes already running in a shipped
+native binary or web deployment require rebuilding/redeploying that application.
+
+The native renderer uses `SpatialScene` with its local/IPC model transport and
+content adapter. Explorer uses `SceneRoot`, which uses the same dispatcher.
+Host adaptations must not fork parser, resolution, primitive, or CSG rules.
+React/Three are peers and consumer bundlers deduplicate them, including tests.
+The explorer Pages workflow checks out the core's `main` beside explorer for each
+build. Native packaging bundles the shared source into its renderer; it has no
+runtime dependency on the source checkout.
+
+Core Pages deployments also run an explorer compatibility job against the exact
+core commit and the explorer main branch, including its tests and production
+build. A consumer regression prevents the core deployment.

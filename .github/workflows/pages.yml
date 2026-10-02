@@ -35,8 +35,41 @@ jobs:
         with:
           path: dist
 
+  explorer-compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this core revision
+        uses: actions/checkout@v4
+        with:
+          path: xyz-viewer
+      - name: Checkout explorer consumer
+        uses: actions/checkout@v4
+        with:
+          repository: xyzspec/explorer
+          ref: main
+          path: explorer
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            xyz-viewer/package-lock.json
+            explorer/package-lock.json
+      - name: Install core
+        run: npm ci
+        working-directory: xyz-viewer
+      - name: Install explorer
+        run: npm ci
+        working-directory: explorer
+      - name: Test explorer against this core
+        run: npm test
+        working-directory: explorer
+      - name: Build explorer against this core
+        run: npm run build
+        working-directory: explorer
+
   deploy:
-    needs: build
+    needs: [build, explorer-compatibility]
     runs-on: ubuntu-latest
     permissions:
       pages: write

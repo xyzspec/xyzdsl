@@ -110,7 +110,8 @@
     "./ui/PressAndHoldButton": "./src/ui/PressAndHoldButton.tsx",
     "./ui/XyzDslEditor": "./src/ui/XyzDslEditor.tsx",
     "./workspace.css": "./src/workspace.css",
-    "./ui/VisualEditor": "./src/ui/VisualEditor.tsx"
+    "./ui/VisualEditor": "./src/ui/VisualEditor.tsx",
+    "./scene/SpatialScene": "./src/scene/SpatialScene.tsx"
   },
   "peerDependencies": {
     "react": "^19.2.1",

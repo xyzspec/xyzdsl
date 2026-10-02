@@ -8,10 +8,7 @@ import type { SpatialDocument } from '../model/SpatialDocument';
 import { dimensionsFromNodes } from '../model/room';
 import { XyzCornerGrid } from './XyzCornerGrid';
 import { Lighting } from './Lighting';
-import { ContentPrimitive } from './ContentPrimitive';
-import { CsgPrimitive } from './CsgPrimitive';
-import { SpatialPrimitive } from './SpatialPrimitive';
-import { ModelPrimitive } from './ModelPrimitive';
+import { SpatialScene } from './SpatialScene';
 import { nodesForRoomSizing } from './roomSizing';
 import { cameraClipPlanes, cameraSceneScale } from './cameraScale';
 import { ViewPointControls } from './ViewPointControls';
@@ -109,23 +106,7 @@ export function SceneRoot({ document: spatialDocument, selectedNodeId, onSelectN
       <PerspectiveCamera ref={cameraRef} makeDefault position={DEFAULT_CAMERA_POSITION} fov={45} near={clips.near} far={clips.far} />
       <Lighting />
       {editorMode && <XyzCornerGrid {...roomDimensions} />}
-      {spatialDocument.csgExpressions.map((expression) => (
-        <CsgPrimitive
-          key={expression.id}
-          expression={expression}
-          onSelect={onSelectNode}
-          selectionEnabled={cameraMode === 'orbit'}
-        />
-      ))}
-      {spatialDocument.renderNodes.map((node) => (
-        node.model?.source ? (
-          <ModelPrimitive key={node.id} node={node} selected={node.id === selectedNodeId} maxTier={QUALITY[quality].maxTier} onSelect={onSelectNode} selectionEnabled={cameraMode === 'orbit'} onPrecisionScaleChange={handleModelPrecisionScaleChange} />
-        ) : node.content?.kind ? (
-          <ContentPrimitive key={node.id} node={node} onSelect={onSelectNode} selectionEnabled={cameraMode === 'orbit'} />
-        ) : (
-          <SpatialPrimitive key={node.id} node={node} onSelect={onSelectNode} selectionEnabled={cameraMode === 'orbit'} />
-        )
-      ))}
+      <SpatialScene document={spatialDocument} selectedNodeId={selectedNodeId} onSelectNode={onSelectNode} selectionEnabled={cameraMode === 'orbit'} maxTier={QUALITY[quality].maxTier} onPrecisionScaleChange={handleModelPrecisionScaleChange}/>
       {editorMode && !point && points.map(node => (
         <ViewPointMarker key={node.id} node={node} selected={node.id === selectedNodeId} onSelect={onSelectNode} />
       ))}
