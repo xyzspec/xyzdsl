@@ -10,10 +10,13 @@ import { WorkspacePanel } from './WorkspacePanel';
 import { XyzDslTreeView } from './XyzDslTreeView';
 import { SelectedNodeInspector, type LinearStepChoice, type RotationStep } from './SelectedNodeInspector';
 import { XyzDslEditor } from './XyzDslEditor';
+import { useMobileViewport } from './useMobileViewport';
 
 /** Controlled editor: hosts own source persistence and asset policy. */
 export function VisualEditor({ source, onChange, assetsPanel, assetError }: { source: string; onChange: (source: string) => void; assetsPanel?: ReactNode; assetError?: string }) {
- const [mode, setMode] = useState<'viewer' | 'editor'>('editor');
+ const mobile = useMobileViewport();
+ const [requestedMode, setMode] = useState<'viewer' | 'editor'>();
+ const mode = requestedMode ?? (mobile ? 'viewer' : 'editor');
  const [tab,setTab] = useState('objects');
  const [line,setLine] = useState<number>();
  const [highlightLine,setHighlightLine] = useState<number>();

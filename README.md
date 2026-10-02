@@ -44,7 +44,9 @@ npm run build
 
 ## Visual editor and mobile workspace
 
-The app opens in editor mode with Objects, Source, Assets, and Problems panels.
+On desktop the app opens in editor mode with Objects, Source, Assets, and Problems
+panels. On mobile it opens in viewer mode and automatically starts the viewpoint
+tour when the scene declares viewpoints. Tap **Editor mode** to open the workspace.
 Select an object in the outline or with Cmd/Ctrl-click in the scene. Edit its
 position, dimensions, rotation, geometry, and material in the inspector; scene
 keyboard controls also update the source declaration. Use **Save scene.xyz** in
