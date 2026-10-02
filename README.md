@@ -99,6 +99,7 @@ The explorer Pages workflow checks out the core's `main` beside explorer for eac
 build. Native packaging bundles the shared source into its renderer; it has no
 runtime dependency on the source checkout.
 
-Core Pages deployments also run an explorer compatibility job against the exact
-core commit and the explorer main branch, including its tests and production
-build. A consumer regression prevents the core deployment.
+The explorer Pages workflow runs its tests and production build against the core
+checkout before deployment. This check belongs to the consumer repository so its
+workflow token can read the application source. Core CI tests shared renderer
+dispatch and host adapters without requiring access to consumer repositories.
