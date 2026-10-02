@@ -59,3 +59,14 @@ reopens the editor on mobile.
 slots for asset controls and errors. The explorer shares the inspector, outline,
 source editor, layout, workspace shell, mobile detection, and workspace CSS via
 package exports. Its transaction panels remain application-owned.
+
+## GitHub Pages
+
+Pushes to `main` run `.github/workflows/pages.yml`: install dependencies with
+`npm ci`, run tests, build, and deploy `dist/` to GitHub Pages. The workflow can
+also be run manually from Actions. Repository Pages settings must use **GitHub
+Actions** as the publishing source. The build uses the base path reported by
+GitHub Pages so scripts, fonts, and GLB decoders work under `/xyzdsl/` and with
+custom domains. Local development keeps its relative base path.
+
+The default deployment URL is https://xyzspec.github.io/xyzdsl/.
